@@ -15,9 +15,9 @@ class Node:
     spojovanem seznamu.
 
     Atributy:
-        value   reprezentuje ulozenou hodnotu/objekt
-        next    reference na nasledujici prvek v seznamu
-        prev    reference na predchazejici prvek v seznamu
+    value   reprezentuje ulozenou hodnotu/objekt
+    next    reference na nasledujici prvek v seznamu
+    prev    reference na predchazejici prvek v seznamu
     """
     def __init__(self):
         self.value = None
@@ -29,8 +29,8 @@ class LinkedList:
     """Trida LinkedList reprezentuje spojovany seznam.
 
     Atributy:
-        first   reference na prvni prvek seznamu
-        last    reference na posledni prvek seznamu
+    first   reference na prvni prvek seznamu
+    last    reference na posledni prvek seznamu
     """
     def __init__(self):
         self.first = None
@@ -41,7 +41,8 @@ def insert(linkedList, value):
     """Metoda insert() vlozi na konec seznamu linkedList (za prvek last)
     novy uzel s hodnotou value. Vraci nove vlozeny objekt.
     """
-    node = Node(value=value)
+    node = Node()
+    node.value = value
     if linkedList.first is None:
         linkedList.first = node
     else:
@@ -57,6 +58,7 @@ def print_list(linkedList):
         print(node.value)
         node = node.next
 
+
 def search(linkedList, value):
     """Metoda search() vraci referenci na prvni vyskyt uzlu s hodnotou
     value v seznamu linkedList. Pokud se hodnota v seznamu nenachazi,
@@ -70,9 +72,13 @@ def delete(linkedList, node):
     """Metoda delete() smaze uzel node v seznamu linkedList."""
     if node.prev is None:
         node.next.prev = None
-        linkdedList.first = node.next
+        linkedList.first = node.next
     elif node.next is None:
-        
+        linkedList.last = node.prev
+    else:
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
 
 # Testy implmentace
 def test_insert_empty():
@@ -86,7 +92,7 @@ def test_insert_empty():
         return
 
     if (l.first.value is 1 and l.last.value is 1 and
-            l.first.next is None and l.first.prev is None):
+        l.first.next is None and l.first.prev is None):
         print("OK")
     else:
         print("FAIL")
