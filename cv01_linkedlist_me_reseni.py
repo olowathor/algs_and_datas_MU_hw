@@ -70,6 +70,7 @@ def search(linkedList, value):
 
 def delete(linkedList, node):
     """Metoda delete() smaze uzel node v seznamu linkedList."""
+    if node
     if node.prev is None:
         node.next.prev = None
         linkedList.first = node.next
