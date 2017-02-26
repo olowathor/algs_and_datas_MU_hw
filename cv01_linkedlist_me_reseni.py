@@ -49,6 +49,7 @@ def insert(linkedList, value):
         node.prev = linkedList.last
 
     linkedList.last = node
+    return node
 
 
 def print_list(linkedList):
@@ -64,14 +65,22 @@ def search(linkedList, value):
     value v seznamu linkedList. Pokud se hodnota v seznamu nenachazi,
     vraci None.
     """
-    pass
-    # TODO
+    node = linkedList.first
+    while node is not None: 
+        if node.value != value:
+            node = node.next
+        else:
+            return node
+
+    return node
 
 
 def delete(linkedList, node):
     """Metoda delete() smaze uzel node v seznamu linkedList."""
-    if node
-    if node.prev is None:
+    if linkedList.first is linkedList.last:
+        linkedList.first = None
+        linkedList.last = None
+    elif node.prev is None:
         node.next.prev = None
         linkedList.first = node.next
     elif node.next is None:
