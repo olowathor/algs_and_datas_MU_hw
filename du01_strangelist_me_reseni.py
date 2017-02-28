@@ -76,7 +76,7 @@ class StrangeList:
         self.last = None
 
 
-def strangeInsert(strangeList, value):
+def strange_insert(strangeList, value):
     """Metoda strangeInsert() vlozi na konec seznamu strangeList (za prvek last)
     novy uzel s hodnotou value. Vraci nove vlozeny objekt.
     """
@@ -98,7 +98,7 @@ def strangeInsert(strangeList, value):
     return snode
 
 
-def strangeSearch(strangeList, value):
+def strange_search(strangeList, value):
     """Metoda search() vraci referenci na prvni vyskyt uzlu s hodnotou
     value v seznamu strangeList. Pokud se hodnota v seznamu nenachazi,
     vraci None.
@@ -114,8 +114,9 @@ def strangeSearch(strangeList, value):
     return firstVal
 
 
-def strangeDelete(strangeList, snode):
+def strange_delete(strangeList, strangeNode):
     """Metoda delete() smaze uzel snode v seznamu strangeList."""
+    snode = strangeNode
     if strangeList.first is strangeList.last:
         '''Existuje jeden/zadny uzel'''
         strangeList.first = None
@@ -132,7 +133,7 @@ def strangeDelete(strangeList, snode):
             strangeList.first = strangeList.last
     elif snode.next is None:
         '''Uzel je posledni, nebo predposledni'''
-        if snode is strangeList.last:
+        if snode.prev.next is None:
             '''Uzel je posledni'''
             if strangeList.last.prev.prev is not None:
                 '''Existuji minimalne 3 uzly'''
@@ -146,7 +147,6 @@ def strangeDelete(strangeList, snode):
                 strangList.last.prev = snode.prev
         
     else:
-        
         snode.prev.next = snode.next
         snode.next.prev = snode.prev
 
@@ -190,8 +190,10 @@ def insert(linkedList, value):
     node.value = value
     if linkedList.first is None:
         linkedList.first = node
+        linkedList.last = node
     else:
         node.prev = linkedList.last
+        linkedList.last.next = node
 
     linkedList.last = node
     return node
@@ -237,9 +239,16 @@ def delete(linkedList, node):
 
 
 def list_to_strange_list(linkedList):
-    pass
-    # TODO
-    
+    node = linkedList.first
+    strangeList = StrangeList()
+
+    strange_insert(strangeList, node.value)
+
+    while node.next is not None:
+        node = node.next
+        strange_insert(strangeList, node.value)
+
+    return strangeList
 
 
 # Ukol 3.
@@ -247,5 +256,33 @@ def list_to_strange_list(linkedList):
 # ukazatele first a last jsou nastaveny spravne.
 
 def check_strange_list(strangeList):
-    pass
-    # TODO
+    if strangeList.first is strangeList.last:
+        print("StrangeList je OK a ma jeden uzel")
+        return
+
+    node = strangeList.first
+    if node.prev is None:
+        '''test first'''
+        if node.next is None:
+            '''test 2 uzly'''
+            if node is strangeList.last.prev:
+                print("First je OK a ma 2 uzly - nasleduje test last")
+            else:
+                print("StrangeList FAIL - moc uzlu na zacatku")
+                return
+        else:
+            print("First je OK - vic jak 2 uzly - nasleduje test last")
+    else:
+        print("StrangeList FAIL - uzel pred prvnim uzlem")
+        return
+    
+    node = strangeList.last
+    if node.next is None:
+        '''test last'''
+        if node.prev.next is None:
+            print("OK - uzly last a last.prev neukazuji na nasledujici uzel")
+            return
+        else:
+            print("StrangeList FAIL - uzel za last")
+            return
+
