@@ -45,8 +45,10 @@ def insert(linkedList, value):
     node.value = value
     if linkedList.first is None:
         linkedList.first = node
+        linkedList.last = node
     else:
         node.prev = linkedList.last
+        linkedList.last.next = node
 
     linkedList.last = node
     return node
