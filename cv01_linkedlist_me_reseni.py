@@ -86,6 +86,7 @@ def delete(linkedList, node):
         node.next.prev = None
         linkedList.first = node.next
     elif node.next is None:
+        node.prev.next = None
         linkedList.last = node.prev
     else:
         node.prev.next = node.next
