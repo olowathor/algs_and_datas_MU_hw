@@ -85,10 +85,12 @@ def strangeInsert(strangeList, value):
 
     if strangeList.first is None:
         strangeList.first = snode
+        strangeList.last = snode
     else:
         snode.prev = strangeList.last
 
         if strangeList.last.prev is not None:
+            '''Existuji minimalne 3 uzly'''
             strangeList.last.prev.next = snode    
 
     strangeList.last = snode
@@ -96,7 +98,7 @@ def strangeInsert(strangeList, value):
     return snode
 
 
-def search(strangeList, value):
+def strangeSearch(strangeList, value):
     """Metoda search() vraci referenci na prvni vyskyt uzlu s hodnotou
     value v seznamu strangeList. Pokud se hodnota v seznamu nenachazi,
     vraci None.
@@ -112,19 +114,41 @@ def search(strangeList, value):
     return firstVal
 
 
-def delete(linkedList, node):
-    """Metoda delete() smaze uzel node v seznamu strangeList."""
-    if linkedList.first is linkedList.last:
-        linkedList.first = None
-        linkedList.last = None
-    elif node.prev is None:
-        node.next.prev = None
-        linkedList.first = node.next
-    elif node.next is None:
-        linkedList.last = node.prev
+def strangeDelete(strangeList, snode):
+    """Metoda delete() smaze uzel snode v seznamu strangeList."""
+    if strangeList.first is strangeList.last:
+        '''Existuje jeden/zadny uzel'''
+        strangeList.first = None
+        strangeList.last = None
+    elif snode.prev is None:
+        '''Uzel je prvni'''
+        if snode.next is not None:
+            '''Existuji minimalne 3 uzly'''
+            strangeList.first.next.prev.prev = None
+            strangeList.first = snode.next.prev
+        else:
+            '''Existuji 2 uzly'''
+            strangeList.last.prev = None
+            strangeList.first = strangeList.last
+    elif snode.next is None:
+        '''Uzel je posledni, nebo predposledni'''
+        if snode is strangeList.last:
+            '''Uzel je posledni'''
+            if strangeList.last.prev.prev is not None:
+                '''Existuji minimalne 3 uzly'''
+                strangeList.last.prev.prev.next = None
+                strangeList.last = snode.prev
+        else:
+            '''Uzel je predposledni'''
+            if strangeList.last.prev.prev is not None:
+                '''Existuji minimalne 3 uzly'''
+                strangeList.last.prev.prev.next = None
+                strangList.last.prev = snode.prev
+        
     else:
-        node.prev.next = node.next
-        node.next.prev = node.prev
+        
+        snode.prev.next = snode.next
+        snode.next.prev = snode.prev
 
 # Ukol 2.
 # Implementujte metodu list_to_strange_list, ktera z oboustranne
@@ -205,6 +229,7 @@ def delete(linkedList, node):
         node.next.prev = None
         linkedList.first = node.next
     elif node.next is None:
+        node.prev.next = None
         linkedList.last = node.prev
     else:
         node.prev.next = node.next
